@@ -1,7 +1,38 @@
 * {
-    background-color: rgb(211, 243, 243);
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+html {
+    background-color: rgb(211, 243, 243);
+}
+
+/* Styling the calculator main */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.calculator {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    height: 450px;
+    padding: 30px 20px;
+    background-color: #10171c;
+    border-radius: 20px;
+}
+
+.display {
+    height: 50px;
+    background-color: #f5ae42;
+    border-radius: 15px;
+}
+
+.buttons {
+    background-color: #10171c;
+    margin: 1rem 6px;
+}
