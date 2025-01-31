@@ -44,9 +44,6 @@ html {
     height: 70px;
     background-color: #f5ae42;
     border-radius: 15px;
-}
-
-.display p {
     font-family: 'DigitsFont';
     font-size: 80px;
 }
