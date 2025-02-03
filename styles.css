@@ -89,7 +89,7 @@ html {
     background-color: #da5339;
 }
 
-.buttons .operator {
+.buttons .operator, .equals {
     background-color: #4b7068;
 }
 
