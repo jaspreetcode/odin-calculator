@@ -1,32 +1,21 @@
-let firstNumber;
-let secondNumber;
+let firstNumber = null;
+let secondNumber = null;
 let operator;
 
 let digits;
 
-function add(x, y) {
-    return x + y;
-}
-
-function subtract(x, y) {
-    return x - y;
-}
-
-function multiply(x, y) {
-    return x * y;
-}
-
-function divide(x, y) {
-    return x / y;
-}
-
-function mod(x, y) {
-    return x % y;
+// Better approach for modular programming - creating functions as objects
+const functions = {
+    add: (a, b) => a + b,
+    subtract: (a, b) => a - b,
+    multiply: (a, b) => a * b,
+    divide: (a, b) => a / b, 
+    mod: (a, b) => a % b,
 }
 
 // The operate() Function
 function operate(a, op, b) {
-    return op(a, b); // Callback function
+    return functions[op](a, b); // calling the functions is now easy
 }
 
 // Populate the display with digits through buttons
@@ -46,17 +35,20 @@ function getOperator(e) {
     }
     operator = e.target.getAttribute("data-op");
     display.textContent = "";
-    digits = null;
-    console.log(firstNumber);
-    console.log(operator);
-    console.log(digits);
 }
 
 function performOperation(e) {
     if (digits) {
         secondNumber = digits;
     }
-    console.log(secondNumber);
+
+    display.textContent = "";
+
+    // If first and second number are provided
+    if (firstNumber && secondNumber) {
+        const result = operate(firstNumber, operator, secondNumber);
+        display.textContent = result;
+    }
 }
 
 digitButtons.forEach(button => {
