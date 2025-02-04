@@ -1,6 +1,7 @@
 let firstNumber = null;
 let secondNumber = null;
 let operator;
+let operatorClicked = false;
 
 let digits;
 
@@ -25,6 +26,10 @@ const equalsOperator = document.querySelector(".buttons .equals");
 const display = document.querySelector(".calculator .display");
 
 function displayDigits(e) {
+    if (operatorClicked) {
+        display.textContent = "";
+        operatorClicked = false;
+    }
     display.textContent += e.target.textContent;
     digits = parseInt(display.textContent);
 }
@@ -34,7 +39,7 @@ function getOperator(e) {
         firstNumber = digits;
     }
     operator = e.target.getAttribute("data-op");
-    display.textContent = "";
+    operatorClicked = true;
 }
 
 function performOperation(e) {
