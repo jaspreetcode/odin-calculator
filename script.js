@@ -2,6 +2,7 @@ let firstNumber = null;
 let secondNumber = null;
 let operator;
 let operatorClicked = false;
+let operatorClickCount = 0;
 
 let digits;
 
@@ -35,14 +36,19 @@ function displayDigits(e) {
 }
 
 function getOperator(e) {
-    if (digits) {
+    operatorClickCount++;
+    if (operatorClickCount >= 2) {
+        performOperation();
+        firstNumber = parseInt(display.textContent);
+    } else if (digits) {
         firstNumber = digits;
     }
     operator = e.target.getAttribute("data-op");
     operatorClicked = true;
+    console.log(firstNumber);
 }
 
-function performOperation(e) {
+function performOperation() {
     if (digits) {
         secondNumber = digits;
     }
@@ -54,6 +60,7 @@ function performOperation(e) {
         const result = operate(firstNumber, operator, secondNumber);
         display.textContent = result;
     }
+    console.log(secondNumber);
 }
 
 digitButtons.forEach(button => {
