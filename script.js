@@ -64,6 +64,8 @@ function performOperation(e) {
         display.textContent = result;
     }
     console.log(secondNumber);
+
+    // Once the "equal to" button is pressed, disable all the other operators
     if (e.target.textContent == "=") {
         operators.forEach(operator => {
             operator.disabled = true;
