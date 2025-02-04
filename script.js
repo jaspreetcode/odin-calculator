@@ -26,11 +26,14 @@ const operators = document.querySelectorAll(".buttons .operator");
 const equalsOperator = document.querySelector(".buttons .equals");
 const display = document.querySelector(".calculator .display");
 
+display.textContent = 0;
+
 function displayDigits(e) {
     if (operatorClicked) {
         display.textContent = "";
         operatorClicked = false;
     }
+    if (display.textContent == 0) display.textContent = "";
     display.textContent += e.target.textContent;
     digits = parseInt(display.textContent);
 }
@@ -38,7 +41,7 @@ function displayDigits(e) {
 function getOperator(e) {
     operatorClickCount++;
     if (operatorClickCount >= 2) {
-        performOperation();
+        performOperation(e);
         firstNumber = parseInt(display.textContent);
     } else if (digits) {
         firstNumber = digits;
@@ -48,7 +51,7 @@ function getOperator(e) {
     console.log(firstNumber);
 }
 
-function performOperation() {
+function performOperation(e) {
     if (digits) {
         secondNumber = digits;
     }
@@ -61,6 +64,12 @@ function performOperation() {
         display.textContent = result;
     }
     console.log(secondNumber);
+    if (e.target.textContent == "=") {
+        operators.forEach(operator => {
+            operator.disabled = true;
+        })
+        e.target.disabled = true;
+    }
 }
 
 digitButtons.forEach(button => {
