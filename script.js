@@ -50,10 +50,7 @@ function displayDigits(e) {
     // Accepting a maximum of 8 digits
     if (!isDisplayOverflow(display.textContent.length)) {
         display.textContent += e.target.textContent;
-        digits = parseInt(display.textContent);
-    }
-    if (display.textContent.length < 8) { // Allowing maximum 8 characters to display 
-        
+        digits = +(display.textContent);
     }
 }
 
@@ -63,12 +60,13 @@ function getOperator(e) {
     operatorClickCount++;
     if (operatorClickCount >= 2) {
         performOperation(e);
-        firstNumber = parseInt(display.textContent);
+        firstNumber = +(display.textContent);
     } else if (digits) {
         firstNumber = digits;
     }
     operator = e.target.getAttribute("data-op");
     operatorClicked = true;
+    console.log(firstNumber);
 }
 
 // Perform operation especially when "Equal to" button is clicked after receiving the second number
@@ -97,6 +95,7 @@ function performOperation(e) {
         })
         e.target.disabled = true;
     }
+    console.log(secondNumber);
 }
 
 digitButtons.forEach(button => {
