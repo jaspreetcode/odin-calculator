@@ -29,7 +29,7 @@ html {
     display: flex;
     flex-direction: column;
     gap: 1.7rem;
-    width: 350px;
+    width: 360px;
     height: 490px;
     padding: 40px 20px;
     background-color: #10171c;
@@ -62,7 +62,7 @@ html {
     display: flex;
     justify-content: flex-start;
     width: 100%;
-    gap: 0.8rem;
+    gap: 1rem;
 }
 
 .buttons button {

@@ -28,6 +28,16 @@ const display = document.querySelector(".calculator .display");
 
 display.textContent = 0;
 
+// helper function to check if the display is overflowing
+// length of digits cannot be more than 8.
+function isDisplayOverflow(len) {
+    if (len >= 8) { 
+        return true;
+    } else {
+        return false
+    }
+}
+
 // Function to display the digits on the screen
 function displayDigits(e) {
     // Reset the display to enter a new number after an operator button is clicked
@@ -36,8 +46,15 @@ function displayDigits(e) {
         operatorClicked = false;
     }
     if (display.textContent == 0) display.textContent = ""; // Remove 0 from the display
-    display.textContent += e.target.textContent;
-    digits = parseInt(display.textContent);
+    // If display is not overflowing, then only concatenate more digits
+    // Accepting a maximum of 8 digits
+    if (!isDisplayOverflow(display.textContent.length)) {
+        display.textContent += e.target.textContent;
+        digits = parseInt(display.textContent);
+    }
+    if (display.textContent.length < 8) { // Allowing maximum 8 characters to display 
+        
+    }
 }
 
 // Function to receive the operator clicked and perform operation for consecutive clicks
@@ -65,9 +82,13 @@ function performOperation(e) {
     // If first and second number are provided
     if (firstNumber && secondNumber) {
         const result = operate(firstNumber, operator, secondNumber);
-        display.textContent = result;
+        const count = String(result).length;
+        if (isDisplayOverflow(count)) { // If result is overflowing the display, then convert it to scientific notation
+            display.textContent = result.toExponential(2);
+        } else { // Otherwise display the result as it is.
+            display.textContent = result;
+        }
     }
-    console.log(secondNumber);
 
     // Once the "equal to" button is pressed, disable all the other operators
     if (e.target.textContent == "=") {
