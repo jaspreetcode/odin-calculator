@@ -28,16 +28,20 @@ const display = document.querySelector(".calculator .display");
 
 display.textContent = 0;
 
+// Function to display the digits on the screen
 function displayDigits(e) {
+    // Reset the display to enter a new number after an operator button is clicked
     if (operatorClicked) {
         display.textContent = "";
         operatorClicked = false;
     }
-    if (display.textContent == 0) display.textContent = "";
+    if (display.textContent == 0) display.textContent = ""; // Remove 0 from the display
     display.textContent += e.target.textContent;
     digits = parseInt(display.textContent);
 }
 
+// Function to receive the operator clicked and perform operation for consecutive clicks
+// Also, receive the first number from the display
 function getOperator(e) {
     operatorClickCount++;
     if (operatorClickCount >= 2) {
@@ -48,9 +52,9 @@ function getOperator(e) {
     }
     operator = e.target.getAttribute("data-op");
     operatorClicked = true;
-    console.log(firstNumber);
 }
 
+// Perform operation especially when "Equal to" button is clicked after receiving the second number
 function performOperation(e) {
     if (digits) {
         secondNumber = digits;
