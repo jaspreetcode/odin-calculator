@@ -63,7 +63,7 @@ function getOperator(e) {
     if (operatorClickCount >= 2) { // If operator is pressed more than once
         if (operator != "equals") performOperation(e); // If operator is "Equals", then getting
         firstNumber = +(display.textContent);
-    } else if (digits) {
+    } else if (digits != null) {
         firstNumber = digits;
         digits = null; // Reset the digits so that the firstNumber should not be picked as the secondNumber.
     }
@@ -74,7 +74,7 @@ function getOperator(e) {
 
 // Perform operation especially when "Equal to" button is clicked after receiving the second number
 function performOperation(e) {
-    if (digits) {
+    if (digits != null) {
         secondNumber = digits;
     }
 
@@ -116,6 +116,12 @@ function clearEverything(e) {
     operatorClicked = false;
     operatorClickCount = 0;
     display.textContent = 0;
+    operators.forEach(operator => {
+        operator.disabled = false;
+    });
+    digitButtons.forEach(button => {
+        button.disabled = false;
+    });
 }
 
 function clearCurrentEntry(e) {
