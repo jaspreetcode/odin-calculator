@@ -38,17 +38,6 @@ function isDisplayOverflow(len) {
     }
 }
 
-function isAvailableValuesOperator() {
-    console.log(firstNumber);
-    console.log(digits);
-    console.log(operator);
-    if (!firstNumber || !digits || !operator) {
-        return false;
-    } else {
-        return true;
-    }
-}
-
 // Function to display the digits on the screen
 function displayDigits(e) {
     // Reset the display to enter a new number after an operator button (including =) is clicked
