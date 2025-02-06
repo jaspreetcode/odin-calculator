@@ -1,6 +1,6 @@
 let firstNumber = null;
 let secondNumber = null;
-let operator;
+let operator = null;
 let operatorClicked = false;
 let operatorClickCount = 0;
 
@@ -28,7 +28,7 @@ const display = document.querySelector(".calculator .display");
 
 display.textContent = 0;
 
-// helper function to check if the display is overflowing
+// Helper function to check if the display is overflowing
 // length of digits cannot be more than 8.
 function isDisplayOverflow(len) {
     if (len >= 8) { 
@@ -38,9 +38,20 @@ function isDisplayOverflow(len) {
     }
 }
 
+function isAvailableValuesOperator() {
+    console.log(firstNumber);
+    console.log(digits);
+    console.log(operator);
+    if (!firstNumber || !digits || !operator) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
 // Function to display the digits on the screen
 function displayDigits(e) {
-    // Reset the display to enter a new number after an operator button is clicked
+    // Reset the display to enter a new number after an operator button (including =) is clicked
     if (operatorClicked) {
         display.textContent = "";
         operatorClicked = false;
@@ -58,15 +69,16 @@ function displayDigits(e) {
 // Also, receive the first number from the display
 function getOperator(e) {
     operatorClickCount++;
-    if (operatorClickCount >= 2) {
-        performOperation(e);
+    if (operatorClickCount >= 2) { // If operator is pressed more than once
+        if (operator != "equals") performOperation(e); // If operator is "Equals", then getting
         firstNumber = +(display.textContent);
     } else if (digits) {
         firstNumber = digits;
+        digits = null; // Reset the digits so that the firstNumber should not be picked as the secondNumber.
     }
     operator = e.target.getAttribute("data-op");
     operatorClicked = true;
-    console.log(firstNumber);
+    equalsOperator.disabled = false; // To allow "=" operator to work.
 }
 
 // Perform operation especially when "Equal to" button is clicked after receiving the second number
@@ -76,26 +88,34 @@ function performOperation(e) {
     }
 
     display.textContent = "";
+    operatorClicked = true;
 
     // If first and second number are provided
     if (firstNumber && secondNumber) {
         const result = operate(firstNumber, operator, secondNumber);
         const count = String(result).length;
+        let finalResult;
         if (isDisplayOverflow(count)) { // If result is overflowing the display, then convert it to scientific notation
-            display.textContent = result.toExponential(2);
+            finalResult = result.toExponential(2);
         } else { // Otherwise display the result as it is.
-            display.textContent = result;
+            finalResult = result;
         }
-    }
-
-    // Once the "equal to" button is pressed, disable all the other operators
-    if (e.target.textContent == "=") {
+        display.textContent = finalResult;
+        e.target.disabled = true; // To avoid multiple clicks of "="
+    } else {
+        display.textContent = "Err";
         operators.forEach(operator => {
             operator.disabled = true;
-        })
-        e.target.disabled = true;
+        });
+        digitButtons.forEach(button => {
+            button.disabled = true;
+        });
+        return;
     }
-    console.log(secondNumber);
+
+    if (e.target.textContent == "=") {
+        operator = e.target.getAttribute("data-op"); // Update the operator to "Equals"
+    }
 }
 
 digitButtons.forEach(button => {
@@ -106,6 +126,6 @@ operators.forEach(operator => {
     operator.addEventListener("click", getOperator);
 });
 
-equalsOperator.addEventListener("click", performOperation)
+equalsOperator.addEventListener("click", performOperation);
 
 
