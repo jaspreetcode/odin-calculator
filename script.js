@@ -81,7 +81,7 @@ function performOperation(e) {
     operatorClicked = true;
 
     // If first and second number are provided
-    if (firstNumber && secondNumber) {
+    if (firstNumber != null && secondNumber != null) {
         const result = operate(firstNumber, operator, secondNumber);
         const count = String(result).length;
         let finalResult;
