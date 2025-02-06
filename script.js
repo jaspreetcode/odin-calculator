@@ -4,7 +4,7 @@ let operator = null;
 let operatorClicked = false;
 let operatorClickCount = 0;
 
-let digits;
+let digits = null;
 
 // Better approach for modular programming - creating functions as objects
 const functions = {
@@ -61,7 +61,7 @@ function displayDigits(e) {
 function getOperator(e) {
     operatorClickCount++;
     if (operatorClickCount >= 2) { // If operator is pressed more than once
-        if (operator != "equals") performOperation(e); // If operator is "Equals", then getting
+        if (operator != "equals" && digits != null) performOperation(e); // If operator is "Equals", then getting
         firstNumber = +(display.textContent);
     } else if (digits != null) {
         firstNumber = digits;
@@ -74,8 +74,9 @@ function getOperator(e) {
 
 // Perform operation especially when "Equal to" button is clicked after receiving the second number
 function performOperation(e) {
-    if (digits != null) {
+    if (digits != null && firstNumber != null) {
         secondNumber = digits;
+        digits = null;
     }
 
     display.textContent = "";
@@ -92,9 +93,10 @@ function performOperation(e) {
             finalResult = result;
         }
         display.textContent = finalResult;
-        e.target.disabled = true; // To avoid multiple clicks of "="
     } else {
-        display.textContent = "Err";
+        // disabling multiple clicks of operators 
+        if (operator != "equals" && operator != null && secondNumber != null) return;
+        else display.textContent = "Err"; //display err when only "=", number with "=" and number operator and "=" is pressed
         operators.forEach(operator => {
             operator.disabled = true;
         });
@@ -106,6 +108,7 @@ function performOperation(e) {
 
     if (e.target.textContent == "=") {
         operator = e.target.getAttribute("data-op"); // Update the operator to "Equals"
+        e.target.disabled = true;
     }
 }
 
@@ -122,6 +125,7 @@ function clearEverything(e) {
     digitButtons.forEach(button => {
         button.disabled = false;
     });
+    equalsOperator.disabled = false;
 }
 
 function clearCurrentEntry(e) {
