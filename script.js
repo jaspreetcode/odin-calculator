@@ -26,6 +26,7 @@ const operators = document.querySelectorAll(".buttons .operator");
 const equalsOperator = document.querySelector(".buttons .equals");
 const display = document.querySelector(".calculator .display");
 const allClearButton = document.querySelector(".buttons .all-clear");
+const clearEntryButton = document.querySelector(".buttons .clear-entry");
 
 display.textContent = 0;
 
@@ -117,6 +118,10 @@ function clearEverything(e) {
     display.textContent = 0;
 }
 
+function clearCurrentEntry(e) {
+    display.textContent = 0;
+}
+
 digitButtons.forEach(button => {
     button.addEventListener("click", displayDigits);
 });
@@ -127,5 +132,6 @@ operators.forEach(operator => {
 
 equalsOperator.addEventListener("click", performOperation);
 allClearButton.addEventListener("click", clearEverything);
+clearEntryButton.addEventListener("click", clearCurrentEntry);
 
 
