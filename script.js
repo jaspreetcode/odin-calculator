@@ -100,7 +100,8 @@ function performOperation(e) {
         console.log(result);
         let finalResult;
         if (isDisplayOverflow(count)) { // If result is overflowing the display, then convert it to scientific notation
-            finalResult = result.toExponential(2);
+            if (!Number.isInteger(result)) finalResult = result.toFixed(2);
+            else finalResult = result.toExponential(2);
         } else { // Otherwise display the result as it is.
             finalResult = result;
         }
