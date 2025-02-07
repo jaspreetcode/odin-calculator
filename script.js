@@ -3,7 +3,7 @@ let secondNumber = null;
 let operator = null;
 let operatorClicked = false;
 let operatorClickCount = 0;
-
+let dotClickedCount = 0;
 let digits = null;
 
 // Better approach for modular programming - creating functions as objects
@@ -27,6 +27,7 @@ const equalsOperator = document.querySelector(".buttons .equals");
 const display = document.querySelector(".calculator .display");
 const allClearButton = document.querySelector(".buttons .all-clear");
 const clearEntryButton = document.querySelector(".buttons .clear-entry");
+const dotButton = document.querySelector(".buttons .dot");
 
 display.textContent = 0;
 
@@ -48,6 +49,12 @@ function displayDigits(e) {
         operatorClicked = false;
     }
     if (display.textContent == 0) display.textContent = ""; // Remove 0 from the display
+    if (e.target.textContent == ".") {
+        dotClickedCount++;
+    }
+    if (dotClickedCount >= 1) {
+        dotButton.disabled = true;
+    }
     // If display is not overflowing, then only concatenate more digits
     // Accepting a maximum of 8 digits
     if (!isDisplayOverflow(display.textContent.length)) {
@@ -60,6 +67,8 @@ function displayDigits(e) {
 // Also, receive the first number from the display
 function getOperator(e) {
     operatorClickCount++;
+    dotButton.disabled = false;
+    dotClickedCount = 0;
     if (operatorClickCount >= 2) { // If operator is pressed more than once
         if (operator != "equals" && digits != null) performOperation(e); // If operator is "Equals", then getting
         firstNumber = +(display.textContent);
@@ -74,6 +83,8 @@ function getOperator(e) {
 
 // Perform operation especially when "Equal to" button is clicked after receiving the second number
 function performOperation(e) {
+    dotButton.disabled = false;
+    dotClickedCount = 0;
     if (digits != null && firstNumber != null) {
         secondNumber = digits;
         digits = null;
@@ -86,6 +97,7 @@ function performOperation(e) {
     if (firstNumber != null && secondNumber != null) {
         const result = operate(firstNumber, operator, secondNumber);
         const count = String(result).length;
+        console.log(result);
         let finalResult;
         if (isDisplayOverflow(count)) { // If result is overflowing the display, then convert it to scientific notation
             finalResult = result.toExponential(2);
@@ -126,10 +138,14 @@ function clearEverything(e) {
         button.disabled = false;
     });
     equalsOperator.disabled = false;
+    dotButton.disabled = false;
+    dotClickedCount = 0;
 }
 
 function clearCurrentEntry(e) {
     display.textContent = 0;
+    dotButton.disabled = false;
+    dotClickedCount = 0;
 }
 
 digitButtons.forEach(button => {
