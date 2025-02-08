@@ -41,6 +41,34 @@ function isDisplayOverflow(len) {
     }
 }
 
+// Converts the operator received from the keystroke to corresponding word so that the appropriate function should be called later
+function operatorToWord(e) {
+    let operator = e.key;
+    let word;
+
+    switch(operator) {
+        case "+": 
+            word = "add";
+            break;
+        case "-":
+            word = "subtract";
+            break;
+        case "*":
+            word = "multiply";
+            break;
+        case "/":
+            word = "divide";
+            break;
+        case "%":
+            word = "mod";
+            break;
+        case "=":
+            word = "equals";
+            break; 
+    }
+    return word;
+}
+
 // Function to display the digits on the screen
 function displayDigits(e) {
     // Reset the display to enter a new number after an operator button (including =) is clicked
@@ -49,16 +77,19 @@ function displayDigits(e) {
         operatorClicked = false;
     }
     if (display.textContent == 0) display.textContent = ""; // Remove 0 from the display
-    if (e.target.textContent == ".") {
+    if (e.target.textContent == "." || e.key == ".") { 
         dotClickedCount++;
     }
-    if (dotClickedCount >= 1) {
-        dotButton.disabled = true;
+    if (dotClickedCount > 1) {
+        if (e.target.textContent == "." || e.key == ".") {
+            return;
+        }
     }
     // If display is not overflowing, then only concatenate more digits
     // Accepting a maximum of 8 digits
     if (!isDisplayOverflow(display.textContent.length)) {
-        display.textContent += e.target.textContent;
+        if (e.key) display.textContent += e.key;
+        else display.textContent += e.target.textContent;
         digits = +(display.textContent);
     }
 }
@@ -76,7 +107,8 @@ function getOperator(e) {
         firstNumber = digits;
         digits = null; // Reset the digits so that the firstNumber should not be picked as the secondNumber.
     }
-    operator = e.target.getAttribute("data-op");
+    if (e.key) operator = operatorToWord(e);
+    else operator = e.target.getAttribute("data-op");
     operatorClicked = true;
     equalsOperator.disabled = false; // To allow "=" operator to work.
 }
@@ -97,7 +129,6 @@ function performOperation(e) {
     if (firstNumber != null && secondNumber != null) {
         const result = operate(firstNumber, operator, secondNumber);
         const count = String(result).length;
-        console.log(result);
         let finalResult;
         if (isDisplayOverflow(count)) { // If result is overflowing the display, then convert it to scientific notation
             if (!Number.isInteger(result)) finalResult = result.toFixed(2);
@@ -119,8 +150,8 @@ function performOperation(e) {
         return;
     }
 
-    if (e.target.textContent == "=") {
-        operator = e.target.getAttribute("data-op"); // Update the operator to "Equals"
+    if (e.target.textContent == "=" || e.key == "=") {
+        operator = e.key ? operatorToWord(e) : e.target.getAttribute("data-op"); // Update the operator to "Equals"
         e.target.disabled = true;
     }
 }
@@ -149,6 +180,16 @@ function clearCurrentEntry(e) {
     dotClickedCount = 0;
 }
 
+// For handling key strokes for the calculator
+function keyController(e) {
+    if (e.key >= "0" && e.key <= "9" || e.key == ".") displayDigits(e);
+    else if (["+", "-", "*", "/", "%"].includes(e.key)) getOperator(e);
+    else if (e.key == "=" || e.key == "Enter") performOperation(e);
+    else if ((e.metaKey || e.ctrlKey) && e.key == "Backspace") clearEverything(e);
+    else if (e.key == "Backspace") clearCurrentEntry(e);
+}
+
+// All the event handlers
 digitButtons.forEach(button => {
     button.addEventListener("click", displayDigits);
 });
@@ -160,5 +201,7 @@ operators.forEach(operator => {
 equalsOperator.addEventListener("click", performOperation);
 allClearButton.addEventListener("click", clearEverything);
 clearEntryButton.addEventListener("click", clearCurrentEntry);
+
+window.addEventListener("keydown", keyController);
 
 
