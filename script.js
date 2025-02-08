@@ -100,6 +100,13 @@ function getOperator(e) {
     operatorClickCount++;
     dotButton.disabled = false;
     dotClickedCount = 0;
+
+    // Reset all the active operators first
+    operators.forEach(operator => {
+        operator.classList.remove("button-pressed");
+    });
+
+    if (!e.key) this.classList.add("button-pressed"); // When an operator is clicked, keep it active
     if (operatorClickCount >= 2) { // If operator is pressed more than once
         if (operator != "equals" && digits != null) performOperation(e); // If operator is "Equals", then getting
         firstNumber = +(display.textContent);
@@ -153,6 +160,11 @@ function performOperation(e) {
     if (e.target.textContent == "=" || e.key == "=") {
         operator = e.key ? operatorToWord(e) : e.target.getAttribute("data-op"); // Update the operator to "Equals"
         e.target.disabled = true;
+
+        // Reset all active operators
+        operators.forEach(operator => {
+            operator.classList.remove("button-pressed");
+        });
     }
 }
 
@@ -172,6 +184,11 @@ function clearEverything(e) {
     equalsOperator.disabled = false;
     dotButton.disabled = false;
     dotClickedCount = 0;
+
+    // Reset all the active operators
+    operators.forEach(operator => {
+        operator.classList.remove("button-pressed");
+    });
 }
 
 function clearCurrentEntry(e) {

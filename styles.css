@@ -75,6 +75,10 @@ html {
     color: white;
 }
 
+.buttons button:active {
+    transform: scale(0.95);
+}
+
 .row4 {
     position: relative;
 }
@@ -95,4 +99,8 @@ html {
 
 .buttons .digit {
     background-color: #aac5c1;
+}
+
+.buttons .button-pressed {
+    background-color: #27413b;
 }
